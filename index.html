@@ -2590,9 +2590,32 @@ body{
           </div>
         </div>
         <div class="sup-content">
+          <div class="filter-bar">
+            <select class="atb-select" id="sup-filter-site" onchange="updateSupplierDashboard()">
+              <option value="all">All my sites</option>
+              <option value="sv800">Sallynoggin (SV800)</option>
+              <option value="sv802">Tandys Lane (SV802)</option>
+              <option value="sv805">Portmarnock (SV805)</option>
+            </select>
+            <select class="atb-select" id="sup-filter-status" onchange="updateSupplierDashboard()">
+              <option value="all">All statuses</option>
+              <option value="needs-info">Needs info</option>
+              <option value="pending-review">Pending review</option>
+              <option value="changes-requested">Changes requested</option>
+              <option value="approved">Approved</option>
+              <option value="rejected">Rejected</option>
+            </select>
+            <select class="atb-select" id="sup-filter-granularity" onchange="onSupGranularityChange()">
+              <option value="day">By day</option>
+              <option value="week">By week</option>
+              <option value="month" selected>By month</option>
+              <option value="year">By year</option>
+            </select>
+            <select class="atb-select" id="sup-filter-period" onchange="updateSupplierDashboard()"></select>
+          </div>
           <div class="sup-met-strip">
-            <div class="sup-met m-red"><div class="smv">3</div><div class="sml">Active sites</div></div>
-            <div class="sup-met m-amb"><div class="smv">€7,940</div><div class="sml">Invoiced this month</div></div>
+            <div class="sup-met m-red"><div class="smv" id="stat-active-sites">3</div><div class="sml">Active sites</div></div>
+            <div class="sup-met m-amb"><div class="smv" id="stat-invoiced">€7,940</div><div class="sml" id="stat-invoiced-label">Invoiced this month</div></div>
             <div class="sup-met m-grn"><div class="smv">9</div><div class="sml">Invoices submitted</div></div>
             <div class="sup-met m-dk"><div class="smv">2</div><div class="sml">Need your attention</div></div>
           </div>
@@ -2601,9 +2624,11 @@ body{
             <div>
               <div class="a-card">
                 <div class="a-card-head"><h2>My sites</h2><span class="a-card-link" onclick="supPage(&#39;pos&#39;)">Manage →</span></div>
+                <div id="my-sites-list">
                 <div class="po-list-item"><div class="po-ref-badge">SV800</div><div class="po-item-info"><div class="po-item-name">Sallynoggin</div><div class="po-item-sub">🧱 €15,150 · 👷 €3,100 · 🔧 €4,200</div></div><div style="margin-left:10px;text-align:right"><div class="po-bal-val">€22,450</div><div class="po-bal-sub">invoiced</div></div></div>
                 <div class="po-list-item"><div class="po-ref-badge" style="background:var(--amb-l);color:var(--amb)">SV802</div><div class="po-item-info"><div class="po-item-name">Tandys Lane</div><div class="po-item-sub">🧱 €900 · 👷 €300 · 🔧 €0</div></div><div style="margin-left:10px;text-align:right"><div class="po-bal-val">€1,200</div><div class="po-bal-sub">invoiced</div></div></div>
                 <div class="po-list-item"><div class="po-ref-badge">SV805</div><div class="po-item-info"><div class="po-item-name">Portmarnock</div><div class="po-item-sub">🧱 €429 · 👷 €1,161 · 🔧 €9,380</div></div><div style="margin-left:10px;text-align:right"><div class="po-bal-val">€10,970</div><div class="po-bal-sub">invoiced</div></div></div>
+                </div>
                 <div style="padding:10px 16px;text-align:center;border-top:1px solid var(--bdr)">
                   <button class="action-pill ap-red" onclick="supPage(&#39;add-po&#39;)">+ Add / update rate card</button>
                 </div>
@@ -2612,18 +2637,23 @@ body{
             <div>
               <div class="a-card">
                 <div class="a-card-head"><h2>Recent invoices</h2><span class="a-card-link" onclick="supPage(&#39;notes&#39;)">View all →</span></div>
-                <div class="dn-list-item"><div class="dn-ref">U683426</div><div class="dn-info"><div class="dn-doc-name">Chadwicks Invoice</div><div class="dn-doc-sub">10 Jun · Tandys Lane · SV802 · 4 items</div></div><div class="dn-val"><span class="bdg bdg-amb" style="font-size:9px">Changes requested</span></div></div>
-                <div class="dn-list-item"><div class="dn-ref">S995429</div><div class="dn-info"><div class="dn-doc-name">Chadwicks Invoice</div><div class="dn-doc-sub">17 Jun · Portmarnock · SV800 · 3 items</div></div><div class="dn-val">€110<small><span class="bdg bdg-grn" style="font-size:9px">Approved</span></small></div></div>
-                <div class="dn-list-item"><div class="dn-ref">U683312</div><div class="dn-info"><div class="dn-doc-name">Chadwicks Invoice</div><div class="dn-doc-sub">05 Jun · Portmarnock · SV805 · 2 items</div></div><div class="dn-val">€840<small><span class="bdg bdg-blue" style="font-size:9px">Pending review</span></small></div></div>
+                <div id="recent-invoices-list">
+                <div class="dn-list-item" data-status="changes-requested" data-site="sv802"><div class="dn-ref">U683426</div><div class="dn-info"><div class="dn-doc-name">Chadwicks Invoice</div><div class="dn-doc-sub">10 Jun · Tandys Lane · SV802 · 4 items</div></div><div class="dn-val"><span class="bdg bdg-amb" style="font-size:9px">Changes requested</span></div></div>
+                <div class="dn-list-item" data-status="approved" data-site="sv800"><div class="dn-ref">S995429</div><div class="dn-info"><div class="dn-doc-name">Chadwicks Invoice</div><div class="dn-doc-sub">17 Jun · Sallynoggin · SV800 · 3 items</div></div><div class="dn-val">€110<small><span class="bdg bdg-grn" style="font-size:9px">Approved</span></small></div></div>
+                <div class="dn-list-item" data-status="pending-review" data-site="sv805"><div class="dn-ref">U683312</div><div class="dn-info"><div class="dn-doc-name">Chadwicks Invoice</div><div class="dn-doc-sub">05 Jun · Portmarnock · SV805 · 2 items</div></div><div class="dn-val">€840<small><span class="bdg bdg-blue" style="font-size:9px">Pending review</span></small></div></div>
+                <div id="recent-invoices-empty" style="display:none;padding:16px;text-align:center;font-size:11px;color:var(--char3)">No invoices match these filters.</div>
+                </div>
                 <div style="padding:10px 16px;text-align:center;border-top:1px solid var(--bdr)">
                   <button class="action-pill ap-ghost" onclick="supPage(&#39;notes&#39;)">View all 9 invoices</button>
                 </div>
               </div>
               <div class="a-card">
-                <div class="a-card-head"><h2>Spend by site — June</h2></div>
+                <div class="a-card-head"><h2 id="spend-by-site-title">Spend by site — June</h2></div>
+                <div id="spend-by-site-list">
                 <div class="spend-site-bar"><div class="ssb-head"><span class="ssb-name">Portmarnock (SV805)</span><span class="ssb-val">€4,929</span></div><div class="ssb-sub">🧱 €429 · 👷 €700 · 🔧 €3,800</div></div>
                 <div class="spend-site-bar"><div class="ssb-head"><span class="ssb-name">Tandys Lane (SV802)</span><span class="ssb-val">€2,051</span></div><div class="ssb-sub">🧱 €1,751 · 👷 €300 · 🔧 €0</div></div>
                 <div class="spend-site-bar"><div class="ssb-head"><span class="ssb-name">Sallynoggin depot (SV800)</span><span class="ssb-val">€960</span></div><div class="ssb-sub">🧱 €960 · 👷 €0 · 🔧 €0</div></div>
+                </div>
               </div>
             </div>
           </div>
@@ -3360,11 +3390,92 @@ function updateCostChart() {
   document.getElementById('pct-equipment').textContent = pct(equipment) + '%';
 }
 
+// ── SUPPLIER DASHBOARD — Site / Status / Granularity filters ──
+var MY_SITES_DATA = [
+  { code: 'sv800', label: 'SV800', name: 'Sallynoggin', materials: 15150, labour: 3100, equipment: 4200, amberBadge: false },
+  { code: 'sv802', label: 'SV802', name: 'Tandys Lane',  materials: 900,   labour: 300,  equipment: 0,    amberBadge: true },
+  { code: 'sv805', label: 'SV805', name: 'Portmarnock',  materials: 429,   labour: 1161, equipment: 9380, amberBadge: false }
+];
+var SPEND_SITE_DATA = [
+  { code: 'sv805', name: 'Portmarnock (SV805)',       materials: 429,  labour: 700, equipment: 3800 },
+  { code: 'sv802', name: 'Tandys Lane (SV802)',       materials: 1751, labour: 300, equipment: 0 },
+  { code: 'sv800', name: 'Sallynoggin depot (SV800)', materials: 960,  labour: 0,   equipment: 0 }
+];
+var SUP_PERIOD_SCALE = { day: 1/22, week: 1/4.33, month: 1, year: 12 };
+var SUP_PERIOD_OPTIONS = {
+  day:   ['15 Jul 2026', '14 Jul 2026', '13 Jul 2026'],
+  week:  ['Week of 14 Jul', 'Week of 07 Jul', 'Week of 30 Jun'],
+  month: ['June 2026', 'May 2026', 'April 2026'],
+  year:  ['2026', '2025']
+};
+var SUP_GRAN_LABEL = { day: 'today', week: 'this week', month: 'this month', year: 'this year' };
+
+function fmtEuro(n) { return '€' + Math.round(n).toLocaleString(); }
+
+function onSupGranularityChange() {
+  var gran = document.getElementById('sup-filter-granularity').value;
+  var sel = document.getElementById('sup-filter-period');
+  sel.innerHTML = '';
+  SUP_PERIOD_OPTIONS[gran].forEach(function(label) {
+    var opt = document.createElement('option');
+    opt.textContent = label;
+    sel.appendChild(opt);
+  });
+  updateSupplierDashboard();
+}
+
+function updateSupplierDashboard() {
+  var siteFilter = document.getElementById('sup-filter-site').value;
+  var statusFilter = document.getElementById('sup-filter-status').value;
+  var gran = document.getElementById('sup-filter-granularity').value;
+  var periodLabel = document.getElementById('sup-filter-period').value || SUP_PERIOD_OPTIONS[gran][0];
+  var scale = SUP_PERIOD_SCALE[gran];
+
+  // My sites (cumulative rate-card totals — not the "this month" stat)
+  var mySites = MY_SITES_DATA.filter(function(s) { return siteFilter === 'all' || s.code === siteFilter; });
+  document.getElementById('my-sites-list').innerHTML = mySites.map(function(s) {
+    var m = Math.round(s.materials * scale), l = Math.round(s.labour * scale), e = Math.round(s.equipment * scale);
+    var badgeStyle = s.amberBadge ? ' style="background:var(--amb-l);color:var(--amb)"' : '';
+    return '<div class="po-list-item"><div class="po-ref-badge"' + badgeStyle + '>' + s.label + '</div>' +
+      '<div class="po-item-info"><div class="po-item-name">' + s.name + '</div><div class="po-item-sub">🧱 ' + fmtEuro(m) + ' · 👷 ' + fmtEuro(l) + ' · 🔧 ' + fmtEuro(e) + '</div></div>' +
+      '<div style="margin-left:10px;text-align:right"><div class="po-bal-val">' + fmtEuro(m + l + e) + '</div><div class="po-bal-sub">invoiced</div></div></div>';
+  }).join('') || '<div style="padding:16px;text-align:center;font-size:11px;color:var(--char3)">No sites match this filter.</div>';
+
+  // Spend by site — this is the basis for the "Invoiced this month" stat
+  var spendSites = SPEND_SITE_DATA.filter(function(s) { return siteFilter === 'all' || s.code === siteFilter; });
+  var totalInvoiced = 0;
+  document.getElementById('spend-by-site-list').innerHTML = spendSites.map(function(s) {
+    var m = Math.round(s.materials * scale), l = Math.round(s.labour * scale), e = Math.round(s.equipment * scale);
+    totalInvoiced += m + l + e;
+    return '<div class="spend-site-bar"><div class="ssb-head"><span class="ssb-name">' + s.name + '</span><span class="ssb-val">' + fmtEuro(m + l + e) + '</span></div>' +
+      '<div class="ssb-sub">🧱 ' + fmtEuro(m) + ' · 👷 ' + fmtEuro(l) + ' · 🔧 ' + fmtEuro(e) + '</div></div>';
+  }).join('') || '<div style="padding:16px;text-align:center;font-size:11px;color:var(--char3)">No sites match this filter.</div>';
+  document.getElementById('spend-by-site-title').textContent = 'Spend by site — ' + periodLabel;
+
+  // Stat tiles
+  document.getElementById('stat-active-sites').textContent = mySites.length;
+  document.getElementById('stat-invoiced').textContent = fmtEuro(totalInvoiced);
+  document.getElementById('stat-invoiced-label').textContent = 'Invoiced ' + SUP_GRAN_LABEL[gran];
+
+  // Recent invoices — filter existing rows
+  var rows = document.querySelectorAll('#recent-invoices-list .dn-list-item');
+  var visibleCount = 0;
+  rows.forEach(function(row) {
+    var show = (statusFilter === 'all' || row.dataset.status === statusFilter) &&
+               (siteFilter === 'all' || row.dataset.site === siteFilter);
+    row.style.display = show ? '' : 'none';
+    if (show) visibleCount++;
+  });
+  var emptyEl = document.getElementById('recent-invoices-empty');
+  if (emptyEl) emptyEl.style.display = visibleCount === 0 ? 'block' : 'none';
+}
+
 /* ══ INIT ══ */
 document.addEventListener('DOMContentLoaded', function() {
   adminPage('dashboard');
   supPage('home');
   onGranularityChange();
+  onSupGranularityChange();
 });
 </script>
 
