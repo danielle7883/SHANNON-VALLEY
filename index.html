@@ -1173,7 +1173,7 @@ body{
         </div>
         <div class="screen-body">
           <div class="metric-grid">
-            <div class="metric met-red"><div class="mv">Net 30</div><div class="ml">Payment terms</div></div>
+            <div class="metric met-red"><div class="mv">3</div><div class="ml">Active sites</div></div>
             <div class="metric met-amb"><div class="mv">€7,940</div><div class="ml">Invoiced this month</div></div>
           </div>
           <div class="metric-grid">
@@ -1183,6 +1183,30 @@ body{
           <div class="warn-box">
             <span style="font-size:14px;flex-shrink:0">⚠️</span>
             <p><strong>2 invoices need action</strong> — 1 awaiting extra info, 1 with changes requested by Shannon Valley. Tap "My invoices" to resolve.</p>
+          </div>
+          <div class="card">
+            <div class="card-head"><h3>Recent invoices</h3><span style="font-size:9px;color:var(--sv-char3);font-weight:400" onclick="goTo(10)">View all →</span></div>
+            <div class="po-row">
+              <div>
+                <div class="pr-name">U683426 · Tandys Lane</div>
+                <div class="pr-sub">10 Jun · €44.15</div>
+              </div>
+              <span class="badge b-amb">Changes requested</span>
+            </div>
+            <div class="po-row">
+              <div>
+                <div class="pr-name">S995429 · Sallynoggin</div>
+                <div class="pr-sub">17 Jun · €110</div>
+              </div>
+              <span class="badge b-grn">Approved</span>
+            </div>
+            <div class="po-row">
+              <div>
+                <div class="pr-name">U683312 · Portmarnock</div>
+                <div class="pr-sub">05 Jun · €840</div>
+              </div>
+              <span class="badge b-blue">Pending review</span>
+            </div>
           </div>
           <div class="card">
             <div class="card-head"><h3>My sites</h3></div>
@@ -1480,6 +1504,16 @@ body{
             <input class="fi" placeholder="e.g. Brian  085-2540454" style="width:100%;padding:9px 11px;border:1px solid var(--sv-border-strong);border-radius:8px;font-size:13px;font-family:inherit;background:#fff">
           </div>
 
+          <div class="fld">
+            <div class="fl" style="color:var(--sv-red)">Cost breakdown (required) — split the €44.15 total</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+              <input class="fi" id="cb-materials" required placeholder="🧱 Materials €" style="width:100%;padding:9px 8px;border:1px solid var(--sv-border-strong);border-radius:8px;font-size:12px;font-family:inherit;background:#fff">
+              <input class="fi" id="cb-labour" required placeholder="👷 Labour €" style="width:100%;padding:9px 8px;border:1px solid var(--sv-border-strong);border-radius:8px;font-size:12px;font-family:inherit;background:#fff">
+              <input class="fi" id="cb-equipment" required placeholder="🔧 Equipment €" style="width:100%;padding:9px 8px;border:1px solid var(--sv-border-strong);border-radius:8px;font-size:12px;font-family:inherit;background:#fff">
+            </div>
+            <div id="cb-error" style="display:none;font-size:10px;color:var(--sv-red);margin-top:4px">All three fields are required — enter 0 if a category doesn't apply.</div>
+          </div>
+
           <div class="card">
             <div class="card-head"><h3>Submission summary</h3></div>
             <div style="padding:10px 13px">
@@ -1492,7 +1526,7 @@ body{
             </div>
           </div>
 
-          <button class="btn btn-red" onclick="goTo(7)">Submit for review</button>
+          <button class="btn btn-red" onclick="submitInvoiceWithCostCheck()">Submit for review</button>
         </div>
       </div>
 
@@ -1580,14 +1614,14 @@ body{
       </div>
 
       <!-- ═══════════════════════════════════════════════
-           SCREEN 9 — RATE CARDS &amp; PAYMENT TERMS
+           SCREEN 9 — RATE CARDS
       ════════════════════════════════════════════════ -->
       <div class="screen" id="sc9">
         <div class="status-bar">
           <span>9:41</span><span>●●●● WiFi</span>
         </div>
         <div class="app-header">
-          <h1>Rates &amp; payment terms</h1>
+          <h1>Rate cards</h1>
           <span class="header-action">+ New</span>
         </div>
         <div class="screen-body">
@@ -1618,38 +1652,6 @@ body{
             </div>
           </div>
 
-          <!-- Payment terms -->
-          <div class="card">
-            <div class="card-head"><h3>Payment terms</h3><span style="font-size:9px;color:var(--sv-char3);font-weight:400">set by Shannon Valley</span></div>
-            <div class="po-row">
-              <div>
-                <div class="pr-name">Standard terms</div>
-                <div class="pr-sub">Net 30 — due 30 days from invoice date</div>
-              </div>
-              <span class="badge b-grn">Active</span>
-            </div>
-            <div class="po-row">
-              <div>
-                <div class="pr-name">Sallynoggin (SV800)</div>
-                <div class="pr-sub">€22,450 invoiced this month</div>
-              </div>
-              <span class="badge b-grn">Within terms</span>
-            </div>
-            <div class="po-row">
-              <div>
-                <div class="pr-name">Tandys Lane (SV802)</div>
-                <div class="pr-sub">€1,200 invoiced — 2 invoices due in 6 days</div>
-              </div>
-              <span class="badge b-amb">Due soon</span>
-            </div>
-            <div class="po-row">
-              <div>
-                <div class="pr-name">Portmarnock (SV805)</div>
-                <div class="pr-sub">€10,970 invoiced this month</div>
-              </div>
-              <span class="badge b-grn">Within terms</span>
-            </div>
-          </div>
         </div>
         <div class="bottom-nav">
           <div class="bnav-item" onclick="goTo(2)"><span class="bni">🏠</span><span class="bnl">Home</span></div>
@@ -1675,7 +1677,7 @@ body{
         <div class="screen-body">
           <div class="metric-grid">
             <div class="metric met-red"><div class="mv">€7,940</div><div class="ml">Total invoiced</div></div>
-            <div class="metric met-grn"><div class="mv">Net 30</div><div class="ml">Payment terms</div></div>
+            <div class="metric met-grn"><div class="mv">3</div><div class="ml">Active sites</div></div>
           </div>
           <div class="card">
             <div class="card-head"><h3>Spend by site</h3></div>
@@ -1766,7 +1768,7 @@ body{
 </div><!-- /phone-wrap -->
 
 <!-- ── NAV ── -->
-<div class="nav-dots" id="navDots"><button class="nav-dot" title="Login" onclick="wfGoTo(1)"></button><button class="nav-dot" title="Supplier dashboard" onclick="wfGoTo(2)"></button><button class="nav-dot on" title="Upload invoice" onclick="wfGoTo(3)"></button><button class="nav-dot" title="Document being read" onclick="wfGoTo(4)"></button><button class="nav-dot" title="Review extracted data" onclick="wfGoTo(5)"></button><button class="nav-dot" title="Review &amp; submit" onclick="wfGoTo(6)"></button><button class="nav-dot" title="Submitted for review" onclick="wfGoTo(7)"></button><button class="nav-dot" title="Invoice status tracker" onclick="wfGoTo(8)"></button><button class="nav-dot" title="Rate cards &amp; payment terms" onclick="wfGoTo(9)"></button><button class="nav-dot" title="Spend report" onclick="wfGoTo(10)"></button><button class="nav-dot" title="Invoice rejected — no SV code" onclick="wfGoTo(11)"></button></div>
+<div class="nav-dots" id="navDots"><button class="nav-dot" title="Login" onclick="wfGoTo(1)"></button><button class="nav-dot" title="Supplier dashboard" onclick="wfGoTo(2)"></button><button class="nav-dot on" title="Upload invoice" onclick="wfGoTo(3)"></button><button class="nav-dot" title="Document being read" onclick="wfGoTo(4)"></button><button class="nav-dot" title="Review extracted data" onclick="wfGoTo(5)"></button><button class="nav-dot" title="Review &amp; submit" onclick="wfGoTo(6)"></button><button class="nav-dot" title="Submitted for review" onclick="wfGoTo(7)"></button><button class="nav-dot" title="Invoice status tracker" onclick="wfGoTo(8)"></button><button class="nav-dot" title="Rate cards" onclick="wfGoTo(9)"></button><button class="nav-dot" title="Spend report" onclick="wfGoTo(10)"></button><button class="nav-dot" title="Invoice rejected — no SV code" onclick="wfGoTo(11)"></button></div>
 <div class="nav-row">
   <button class="nav-btn-arrow" id="prevBtn" onclick="prev()">← Previous</button>
   <button class="nav-btn-arrow primary-nav" id="nextBtn" onclick="next()">Next screen →</button>
@@ -1863,10 +1865,10 @@ body{
             <div>
               <div class="a-card">
                 <div class="a-card-head"><h2>Spend by supplier</h2><span class="a-card-link" onclick="adminPage(&#39;suppliers&#39;)">View all →</span></div>
-                <div class="sup-row-item"><div class="sup-avatar">CH</div><div class="sup-info"><div class="sup-name">Chadwicks</div><div class="sup-chips"><span class="sup-chip">SV800</span><span class="sup-chip">SV802</span><span class="sup-chip">SV805</span></div></div><div class="sup-amount"><div class="sup-amt-val">€12,040</div><div class="sup-amt-sub">Net 30 terms</div></div></div>
-                <div class="sup-row-item"><div class="sup-avatar">DPL</div><div class="sup-info"><div class="sup-name">DPL Kilmainham</div><div class="sup-chips"><span class="sup-chip">SV100</span><span class="sup-chip">SV802</span></div></div><div class="sup-amount"><div class="sup-amt-val">€8,760</div><div class="sup-amt-sub">Net 60 terms</div></div></div>
-                <div class="sup-row-item"><div class="sup-avatar">WOG</div><div class="sup-info"><div class="sup-name">Wogan Build Centre</div><div class="sup-chips"><span class="sup-chip">SV805</span></div></div><div class="sup-amount"><div class="sup-amt-val">€7,361</div><div class="sup-amt-sub">Net 30 terms</div></div></div>
-                <div class="sup-row-item"><div class="sup-avatar">MCM</div><div class="sup-info"><div class="sup-name">McMunn Plant Hire</div><div class="sup-chips"><span class="sup-chip">SV800</span></div></div><div class="sup-amount"><div class="sup-amt-val">€5,200</div><div class="sup-amt-sub">Net 14 terms</div></div></div>
+                <div class="sup-row-item"><div class="sup-avatar">CH</div><div class="sup-info"><div class="sup-name">Chadwicks</div><div class="sup-chips"><span class="sup-chip">SV800</span><span class="sup-chip">SV802</span><span class="sup-chip">SV805</span></div></div><div class="sup-amount"><div class="sup-amt-val">€12,040</div><div class="sup-amt-sub">6 invoices</div></div></div>
+                <div class="sup-row-item"><div class="sup-avatar">DPL</div><div class="sup-info"><div class="sup-name">DPL Kilmainham</div><div class="sup-chips"><span class="sup-chip">SV100</span><span class="sup-chip">SV802</span></div></div><div class="sup-amount"><div class="sup-amt-val">€8,760</div><div class="sup-amt-sub">8 invoices</div></div></div>
+                <div class="sup-row-item"><div class="sup-avatar">WOG</div><div class="sup-info"><div class="sup-name">Wogan Build Centre</div><div class="sup-chips"><span class="sup-chip">SV805</span></div></div><div class="sup-amount"><div class="sup-amt-val">€7,361</div><div class="sup-amt-sub">3 invoices</div></div></div>
+                <div class="sup-row-item"><div class="sup-avatar">MCM</div><div class="sup-info"><div class="sup-name">McMunn Plant Hire</div><div class="sup-chips"><span class="sup-chip">SV800</span></div></div><div class="sup-amount"><div class="sup-amt-val">€5,200</div><div class="sup-amt-sub">4 invoices</div></div></div>
                 <div class="sup-row-item"><div class="sup-avatar" style="background:var(--bg2);color:var(--char3)">+4</div><div class="sup-info"><div class="sup-name" style="color:var(--char3)">4 other suppliers</div></div><div class="sup-amount"><div class="sup-amt-val">€6,289</div><div class="sup-amt-sub">combined</div></div></div>
               </div>
               <div class="a-card">
@@ -2106,16 +2108,13 @@ body{
                       </div>
                     </div>
                   </div>
-                  <!-- Payment terms summary -->
+                  <!-- Delivery summary -->
                   <div class="exp-section">
-                    <div class="exp-section-head"><h4>💳 Payment terms</h4><button class="action-pill ap-ghost" style="font-size:9px;padding:3px 8px" onclick="adminPage(&#39;pos&#39;)">View all rate cards</button></div>
+                    <div class="exp-section-head"><h4>🧾 Delivery summary</h4><button class="action-pill ap-ghost" style="font-size:9px;padding:3px 8px" onclick="adminPage(&#39;pos&#39;)">View all rate cards</button></div>
                     <div class="exp-section-body">
-                      <div class="access-status-row"><span class="asr-label">Agreed terms</span><span class="asr-val grn">Net 30</span></div>
                       <div class="access-status-row"><span class="asr-label">Total delivered</span><span class="asr-val">€12,040</span></div>
                       <div class="access-status-row"><span class="asr-label">Cost breakdown</span><span class="asr-val" style="font-size:9px">🧱€10,500 · 👷€1,540 · 🔧€0</span></div>
-                      <div class="access-status-row"><span class="asr-label">Overdue</span><span class="asr-val grn">None</span></div>
                       <div class="access-status-row"><span class="asr-label">Notes this month</span><span class="asr-val">6</span></div>
-                      <div style="margin-top:8px"><button class="action-pill ap-outline" style="font-size:10px;width:100%;justify-content:center" onclick="showToast(&#39;Payment terms updated ✓&#39;)">Edit payment terms</button></div>
                     </div>
                   </div>
                 </div>
@@ -2160,12 +2159,10 @@ body{
                     </div>
                   </div>
                   <div class="exp-section">
-                    <div class="exp-section-head"><h4>💳 Payment terms</h4></div>
+                    <div class="exp-section-head"><h4>🧾 Delivery summary</h4></div>
                     <div class="exp-section-body">
-                      <div class="access-status-row"><span class="asr-label">Agreed terms</span><span class="asr-val grn">Net 60</span></div>
                       <div class="access-status-row"><span class="asr-label">Total delivered</span><span class="asr-val">€8,760</span></div>
                       <div class="access-status-row"><span class="asr-label">Cost breakdown</span><span class="asr-val" style="font-size:9px">🧱€8,060 · 👷€700 · 🔧€0</span></div>
-                      <div class="access-status-row"><span class="asr-label">Overdue</span><span class="asr-val grn">None</span></div>
                       <div class="access-status-row"><span class="asr-label">Notes this month</span><span class="asr-val">8</span></div>
                     </div>
                   </div>
@@ -2186,7 +2183,7 @@ body{
                 <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
                   <span class="bdg bdg-grn">📱 1 app user</span>
                   <span class="bdg bdg-blue">💻 Portal active</span>
-                  <span class="bdg bdg-amb">Payment due soon</span>
+                  <span class="bdg bdg-amb">🔧 Equipment-heavy</span>
                 </div>
               </div>
               <div class="sup-expanded" id="exp-wog">
@@ -2206,12 +2203,10 @@ body{
                     </div>
                   </div>
                   <div class="exp-section">
-                    <div class="exp-section-head"><h4>💳 Payment terms</h4></div>
+                    <div class="exp-section-head"><h4>🧾 Delivery summary</h4></div>
                     <div class="exp-section-body">
-                      <div class="access-status-row"><span class="asr-label">Agreed terms</span><span class="asr-val grn">Net 30</span></div>
                       <div class="access-status-row"><span class="asr-label">Total delivered</span><span class="asr-val">€7,361</span></div>
                       <div class="access-status-row"><span class="asr-label">Cost breakdown</span><span class="asr-val" style="font-size:9px">🧱€0 · 👷€1,161 · 🔧€6,200</span></div>
-                      <div class="access-status-row"><span class="asr-label">Due soon</span><span class="asr-val" style="color:var(--amb)">2 invoices, due in 6 days</span></div>
                       <div class="access-status-row"><span class="asr-label">Notes this month</span><span class="asr-val">3</span></div>
                     </div>
                   </div>
@@ -2232,7 +2227,7 @@ body{
                 <div style="display:flex;gap:8px;align-items:center;flex-shrink:0">
                   <span class="bdg bdg-grn">📱 2 app users</span>
                   <span class="bdg bdg-blue">💻 Portal active</span>
-                  <span class="bdg bdg-amb">Payment due soon</span>
+                  <span class="bdg bdg-grn">Active</span>
                 </div>
               </div>
               <div class="sup-expanded" id="exp-murp">
@@ -2252,12 +2247,10 @@ body{
                     </div>
                   </div>
                   <div class="exp-section">
-                    <div class="exp-section-head"><h4>💳 Payment terms</h4></div>
+                    <div class="exp-section-head"><h4>🧾 Delivery summary</h4></div>
                     <div class="exp-section-body">
-                      <div class="access-status-row"><span class="asr-label">Agreed terms</span><span class="asr-val grn">Net 30</span></div>
                       <div class="access-status-row"><span class="asr-label">Total invoiced</span><span class="asr-val">€5,800</span></div>
                       <div class="access-status-row"><span class="asr-label">Cost breakdown</span><span class="asr-val" style="font-size:9px">🧱€5,800 · 👷€0 · 🔧€0</span></div>
-                      <div class="access-status-row"><span class="asr-label">Due soon</span><span class="asr-val" style="color:var(--amb)">1 invoice, due in 4 days</span></div>
                     </div>
                   </div>
                 </div>
@@ -2330,7 +2323,7 @@ body{
                 <div class="sup-expanded-inner">
                   <div class="exp-section"><div class="exp-section-head"><h4>💻 Portal access</h4><button class="action-pill ap-red" style="font-size:9px;padding:3px 8px" onclick="showToast(&#39;Invite sent ✓&#39;)">+ Add user</button></div><div class="exp-section-body"><div class="user-pill"><div class="up-av">PM</div><div style="flex:1"><div class="up-name">Pat McMunn</div><div class="up-email">p.mcmunn@mcmunn.ie</div></div><span class="up-status active">Active</span><div class="up-actions"><button class="up-btn up-btn-red" onclick="showToast(&#39;Revoked&#39;)">Revoke</button></div></div><div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--bdr)"><div class="access-status-row"><span class="asr-label">Last login</span><span class="asr-val">28 May, 3:10pm</span></div><div class="access-status-row"><span class="asr-label">Portal access</span><div class="toggle-switch"><button class="toggle on" onclick="this.classList.toggle(&#39;on&#39;);showToast(&#39;Updated&#39;)"></button><span class="toggle-label">Enabled</span></div></div></div></div></div>
                   <div class="exp-section"><div class="exp-section-head"><h4>📱 App users &amp; PINs</h4><button class="action-pill ap-red" style="font-size:9px;padding:3px 8px" onclick="openModal(&#39;addappuser&#39;)">+ Add user</button></div><div class="exp-section-body"><div class="app-user-row"><div class="aur-av">PM</div><div class="aur-info"><div class="aur-name">Pat McMunn</div><div class="aur-role">Owner</div></div><div class="aur-pin"><div class="aur-pin-dot">6</div><div class="aur-pin-dot">0</div><div class="aur-pin-dot">3</div><div class="aur-pin-dot">7</div></div><div class="aur-actions"><button class="up-btn up-btn-gray" onclick="openModal(&#39;resetpin&#39;)">Reset PIN</button><button class="up-btn up-btn-red" onclick="showToast(&#39;Removed&#39;)">Remove</button></div></div><div class="app-user-row"><div class="aur-av">CT</div><div class="aur-info"><div class="aur-name">Ciara Tully</div><div class="aur-role">Office manager</div></div><div class="aur-pin"><div class="aur-pin-hidden">•</div><div class="aur-pin-hidden">•</div><div class="aur-pin-hidden">•</div><div class="aur-pin-hidden">•</div></div><div class="aur-actions"><button class="up-btn up-btn-gray" onclick="openModal(&#39;resetpin&#39;)">Reset PIN</button><button class="up-btn up-btn-red" onclick="showToast(&#39;Removed&#39;)">Remove</button></div></div></div></div>
-                  <div class="exp-section"><div class="exp-section-head"><h4>💳 Payment terms</h4></div><div class="exp-section-body"><div class="access-status-row"><span class="asr-label">Agreed terms</span><span class="asr-val grn">Net 14</span></div><div class="access-status-row"><span class="asr-label">Total invoiced</span><span class="asr-val">€5,200</span></div><div class="access-status-row"><span class="asr-label">Cost breakdown</span><span class="asr-val" style="font-size:9px">🧱€0 · 👷€0 · 🔧€5,200</span></div><div class="access-status-row"><span class="asr-label">Invoices this month</span><span class="asr-val">4</span></div></div></div>
+                  <div class="exp-section"><div class="exp-section-head"><h4>🧾 Delivery summary</h4></div><div class="exp-section-body"><div class="access-status-row"><span class="asr-label">Total invoiced</span><span class="asr-val">€5,200</span></div><div class="access-status-row"><span class="asr-label">Cost breakdown</span><span class="asr-val" style="font-size:9px">🧱€0 · 👷€0 · 🔧€5,200</span></div><div class="access-status-row"><span class="asr-label">Invoices this month</span><span class="asr-val">4</span></div></div></div>
                 </div>
               </div>
             </div>
@@ -2355,14 +2348,14 @@ body{
           <div class="a-card">
             <div class="a-card-head"><h2>All rate cards</h2><span class="a-card-sub">6 rate cards across 8 suppliers</span></div>
             <table class="data-table">
-              <thead><tr><th>Supplier</th><th>SV site</th><th>Payment Terms</th><th>Items on rate card</th><th>Last updated</th><th>Status</th><th></th></tr></thead>
+              <thead><tr><th>Supplier</th><th>SV site</th><th>Items on rate card</th><th>Last updated</th><th>Status</th><th></th></tr></thead>
               <tbody>
-                <tr><td style="font-weight:600">Chadwicks</td><td><span class="bdg bdg-blue">SV800</span> Sallynoggin</td><td>Net 30</td><td class="td-num">8</td><td>02 Jun 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
-                <tr><td style="font-weight:600">Chadwicks</td><td><span class="bdg bdg-blue">SV802</span> Tandys Lane</td><td>Net 30</td><td class="td-num">6</td><td>28 May 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
-                <tr><td style="font-weight:600">Chadwicks</td><td><span class="bdg bdg-blue">SV805</span> Portmarnock</td><td>Net 30</td><td class="td-num">5</td><td>15 May 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
-                <tr><td style="font-weight:600">DPL Kilmainham</td><td><span class="bdg bdg-blue">SV100</span> Dunsink Lane</td><td>Net 60</td><td class="td-num">10</td><td>20 May 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
-                <tr><td style="font-weight:600">Wogan Build Centre</td><td><span class="bdg bdg-blue">SV805</span> Portmarnock</td><td>Net 30</td><td class="td-num">4</td><td>01 Jun 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
-                <tr><td style="font-weight:600">Murphy Supplies</td><td><span class="bdg bdg-blue">SV100</span> Dunsink Lane</td><td>Net 30</td><td class="td-num">3</td><td>03 Jun 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
+                <tr><td style="font-weight:600">Chadwicks</td><td><span class="bdg bdg-blue">SV800</span> Sallynoggin</td><td class="td-num">8</td><td>02 Jun 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
+                <tr><td style="font-weight:600">Chadwicks</td><td><span class="bdg bdg-blue">SV802</span> Tandys Lane</td><td class="td-num">6</td><td>28 May 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
+                <tr><td style="font-weight:600">Chadwicks</td><td><span class="bdg bdg-blue">SV805</span> Portmarnock</td><td class="td-num">5</td><td>15 May 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
+                <tr><td style="font-weight:600">DPL Kilmainham</td><td><span class="bdg bdg-blue">SV100</span> Dunsink Lane</td><td class="td-num">10</td><td>20 May 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
+                <tr><td style="font-weight:600">Wogan Build Centre</td><td><span class="bdg bdg-blue">SV805</span> Portmarnock</td><td class="td-num">4</td><td>01 Jun 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
+                <tr><td style="font-weight:600">Murphy Supplies</td><td><span class="bdg bdg-blue">SV100</span> Dunsink Lane</td><td class="td-num">3</td><td>03 Jun 2026</td><td><span class="bdg bdg-grn">Active</span></td><td><button class="action-pill ap-ghost" onclick="showToast(&#39;Opening rate card…&#39;)">View</button></td></tr>
               </tbody>
             </table>
           </div>
@@ -2523,7 +2516,7 @@ body{
         <button class="sup-sb-item on" onclick="supPage(&#39;home&#39;)"><span class="ico">🏠</span> Dashboard</button>
         <button class="sup-sb-item" onclick="supPage(&#39;add-note&#39;)"><span class="ico">🧾</span> Upload invoice</button>
         <button class="sup-sb-item" onclick="supPage(&#39;notes&#39;)"><span class="ico">📄</span> My invoices <span class="sup-sb-badge">2</span></button>
-        <button class="sup-sb-item" onclick="supPage(&#39;pos&#39;)"><span class="ico">💳</span> My rate cards &amp; payment terms</button>
+        <button class="sup-sb-item" onclick="supPage(&#39;pos&#39;)"><span class="ico">💳</span> My rate cards</button>
         <button class="sup-sb-item" onclick="supPage(&#39;add-po&#39;)"><span class="ico">➕</span> Add / update rate card</button>
       </div>
       <div class="sup-sb-foot">
@@ -2543,7 +2536,7 @@ body{
         </div>
         <div class="sup-content">
           <div class="sup-met-strip">
-            <div class="sup-met m-red"><div class="smv">Net 30</div><div class="sml">Payment terms</div></div>
+            <div class="sup-met m-red"><div class="smv">3</div><div class="sml">Active sites</div></div>
             <div class="sup-met m-amb"><div class="smv">€7,940</div><div class="sml">Invoiced this month</div></div>
             <div class="sup-met m-grn"><div class="smv">9</div><div class="sml">Invoices submitted</div></div>
             <div class="sup-met m-dk"><div class="smv">2</div><div class="sml">Need your attention</div></div>
@@ -2552,10 +2545,10 @@ body{
           <div class="two-col">
             <div>
               <div class="a-card">
-                <div class="a-card-head"><h2>Payment terms</h2><span class="a-card-link" onclick="supPage(&#39;pos&#39;)">Manage →</span></div>
-                <div class="po-list-item"><div class="po-ref-badge">SV800</div><div class="po-item-info"><div class="po-item-name">Sallynoggin</div><div class="po-item-sub">Net 30 · set by Shannon Valley</div></div><div style="margin-left:10px;text-align:right"><div class="po-bal-val">€22,450</div><div class="po-bal-sub">invoiced</div></div></div>
-                <div class="po-list-item"><div class="po-ref-badge" style="background:var(--amb-l);color:var(--amb)">SV802</div><div class="po-item-info"><div class="po-item-name">Tandys Lane</div><div class="po-item-sub">Net 30 · set by Shannon Valley</div></div><div style="margin-left:10px;text-align:right"><div class="po-bal-val">€1,200</div><div class="po-bal-sub" style="color:var(--amb)">⚠ due in 6 days</div></div></div>
-                <div class="po-list-item"><div class="po-ref-badge">SV805</div><div class="po-item-info"><div class="po-item-name">Portmarnock</div><div class="po-item-sub">Net 30 · set by Shannon Valley</div></div><div style="margin-left:10px;text-align:right"><div class="po-bal-val">€10,970</div><div class="po-bal-sub">invoiced</div></div></div>
+                <div class="a-card-head"><h2>My sites</h2><span class="a-card-link" onclick="supPage(&#39;pos&#39;)">Manage →</span></div>
+                <div class="po-list-item"><div class="po-ref-badge">SV800</div><div class="po-item-info"><div class="po-item-name">Sallynoggin</div><div class="po-item-sub">🧱 €15,150 · 👷 €3,100 · 🔧 €4,200</div></div><div style="margin-left:10px;text-align:right"><div class="po-bal-val">€22,450</div><div class="po-bal-sub">invoiced</div></div></div>
+                <div class="po-list-item"><div class="po-ref-badge" style="background:var(--amb-l);color:var(--amb)">SV802</div><div class="po-item-info"><div class="po-item-name">Tandys Lane</div><div class="po-item-sub">🧱 €900 · 👷 €300 · 🔧 €0</div></div><div style="margin-left:10px;text-align:right"><div class="po-bal-val">€1,200</div><div class="po-bal-sub">invoiced</div></div></div>
+                <div class="po-list-item"><div class="po-ref-badge">SV805</div><div class="po-item-info"><div class="po-item-name">Portmarnock</div><div class="po-item-sub">🧱 €429 · 👷 €1,161 · 🔧 €9,380</div></div><div style="margin-left:10px;text-align:right"><div class="po-bal-val">€10,970</div><div class="po-bal-sub">invoiced</div></div></div>
                 <div style="padding:10px 16px;text-align:center;border-top:1px solid var(--bdr)">
                   <button class="action-pill ap-red" onclick="supPage(&#39;add-po&#39;)">+ Add / update rate card</button>
                 </div>
@@ -2573,9 +2566,9 @@ body{
               </div>
               <div class="a-card">
                 <div class="a-card-head"><h2>Spend by site — June</h2></div>
-                <div class="spend-site-bar"><div class="ssb-head"><span class="ssb-name">Portmarnock (SV805)</span><span class="ssb-val">€4,929</span></div><div class="ssb-sub">Net 30 · within payment terms</div></div>
-                <div class="spend-site-bar"><div class="ssb-head"><span class="ssb-name">Tandys Lane (SV802)</span><span class="ssb-val">€2,051</span></div><div class="ssb-sub" style="color:var(--amb)">Net 30 · 2 invoices due in 6 days</div></div>
-                <div class="spend-site-bar"><div class="ssb-head"><span class="ssb-name">Sallynoggin depot (SV800)</span><span class="ssb-val">€960</span></div><div class="ssb-sub">Net 30 · within payment terms</div></div>
+                <div class="spend-site-bar"><div class="ssb-head"><span class="ssb-name">Portmarnock (SV805)</span><span class="ssb-val">€4,929</span></div><div class="ssb-sub">🧱 €429 · 👷 €700 · 🔧 €3,800</div></div>
+                <div class="spend-site-bar"><div class="ssb-head"><span class="ssb-name">Tandys Lane (SV802)</span><span class="ssb-val">€2,051</span></div><div class="ssb-sub">🧱 €1,751 · 👷 €300 · 🔧 €0</div></div>
+                <div class="spend-site-bar"><div class="ssb-head"><span class="ssb-name">Sallynoggin depot (SV800)</span><span class="ssb-val">€960</span></div><div class="ssb-sub">🧱 €960 · 👷 €0 · 🔧 €0</div></div>
               </div>
             </div>
           </div>
@@ -2601,13 +2594,13 @@ body{
                   </div>
                 </div>
                 <div class="form-grid single"><div><label class="f-label">Or manually enter invoice reference</label><input class="f-input" placeholder="e.g. U683426, KL355062, SI00285110"></div></div>
-                <div class="form-grid single" style="margin-top:4px"><div><label class="f-label">Cost breakdown — split this invoice's total</label></div></div>
+                <div class="form-grid single" style="margin-top:4px"><div><label class="f-label" style="color:var(--red)">Cost breakdown (required) — split this invoice's total</label></div></div>
                 <div class="form-grid three">
-                  <div><label class="f-label">🧱 Materials (€)</label><input class="f-input" placeholder="0.00"></div>
-                  <div><label class="f-label">👷 Labour (€)</label><input class="f-input" placeholder="0.00"></div>
-                  <div><label class="f-label">🔧 Equipment (€)</label><input class="f-input" placeholder="0.00"></div>
+                  <div><label class="f-label">🧱 Materials (€)</label><input class="f-input" required placeholder="0.00"></div>
+                  <div><label class="f-label">👷 Labour (€)</label><input class="f-input" required placeholder="0.00"></div>
+                  <div><label class="f-label">🔧 Equipment (€)</label><input class="f-input" required placeholder="0.00"></div>
                 </div>
-                <div style="font-size:10px;color:var(--char3);margin-top:-4px">These three amounts must add up to the invoice total ex VAT.</div>
+                <div style="font-size:10px;color:var(--char3);margin-top:-4px">All three fields are required and must add up to the invoice total ex VAT — enter 0 if a category doesn't apply.</div>
               </div>
             </div>
             <div>
@@ -2662,10 +2655,10 @@ body{
         </div>
       </div>
 
-      <!-- PAGE: MY RATE CARDS & PAYMENT TERMS -->
+      <!-- PAGE: MY RATE CARDS -->
       <div id="sp-pos" class="spage">
         <div class="sup-topbar">
-          <h1>My rate cards &amp; payment terms</h1>
+          <h1>My rate cards</h1>
           <div class="tb-right">
             <select class="atb-select"><option>June 2026</option><option>May 2026</option><option>Q2 2026</option></select>
             <button class="btn-outline" onclick="showToast(&#39;Exporting…&#39;)">⬇ Export</button>
@@ -2673,15 +2666,15 @@ body{
           </div>
         </div>
         <div class="sup-content">
-          <div class="info-strip">Payment terms are set by Shannon Valley — contact your account manager if you have questions. Rate cards are yours to keep up to date; they're what every invoice you submit gets checked against.</div>
+          <div class="info-strip">Rate cards are yours to keep up to date — they're what every invoice you submit gets checked against.</div>
           <div class="a-card">
-            <div class="a-card-head"><h2>My sites</h2><span class="a-card-sub">3 sites · Net 30 payment terms</span></div>
+            <div class="a-card-head"><h2>My sites</h2><span class="a-card-sub">3 sites</span></div>
             <table class="data-table">
-              <thead><tr><th>Site</th><th>Payment Terms</th><th>Invoiced</th><th>Rate card items</th><th>Status</th></tr></thead>
+              <thead><tr><th>Site</th><th>🧱 Materials</th><th>👷 Labour</th><th>🔧 Equipment</th><th>Rate card items</th></tr></thead>
               <tbody>
-                <tr><td style="font-weight:600">Sallynoggin <span class="bdg bdg-blue">SV800</span></td><td class="td-num">Net 30</td><td class="td-num">€22,450</td><td class="td-num">8</td><td><span class="bdg bdg-grn">Within terms</span></td></tr>
-                <tr><td style="font-weight:600">Tandys Lane <span class="bdg bdg-blue">SV802</span></td><td class="td-num">Net 30</td><td class="td-num" style="font-weight:700">€1,200</td><td class="td-num">6</td><td><span class="bdg bdg-amb">Due in 6 days</span></td></tr>
-                <tr><td style="font-weight:600">Portmarnock <span class="bdg bdg-blue">SV805</span></td><td class="td-num">Net 30</td><td class="td-num">€10,970</td><td class="td-num">5</td><td><span class="bdg bdg-grn">Within terms</span></td></tr>
+                <tr><td style="font-weight:600">Sallynoggin <span class="bdg bdg-blue">SV800</span></td><td class="td-num">€15,150</td><td class="td-num">€3,100</td><td class="td-num">€4,200</td><td class="td-num">8</td></tr>
+                <tr><td style="font-weight:600">Tandys Lane <span class="bdg bdg-blue">SV802</span></td><td class="td-num">€900</td><td class="td-num">€300</td><td class="td-num">€0</td><td class="td-num">6</td></tr>
+                <tr><td style="font-weight:600">Portmarnock <span class="bdg bdg-blue">SV805</span></td><td class="td-num">€429</td><td class="td-num">€1,161</td><td class="td-num">€9,380</td><td class="td-num">5</td></tr>
               </tbody>
             </table>
           </div>
@@ -2754,7 +2747,7 @@ body{
         <div class="dn-meta-item"><div class="dn-meta-label">SV site number</div><div class="dn-meta-val">SV802 — Tandys Lane</div></div>
         <div class="dn-meta-item"><div class="dn-meta-label">Date</div><div class="dn-meta-val">10 Jun 2026</div></div>
         <div class="dn-meta-item"><div class="dn-meta-label">Total ex VAT</div><div class="dn-meta-val">€44.15</div></div>
-        <div class="dn-meta-item"><div class="dn-meta-label">Payment terms</div><div class="dn-meta-val">Net 30 · due 10 Jul</div></div>
+        <div class="dn-meta-item"><div class="dn-meta-label">Line items</div><div class="dn-meta-val">4 items</div></div>
         <div class="dn-meta-item"><div class="dn-meta-label">Status</div><div class="dn-meta-val"><span class="bdg bdg-red">Changes requested</span></div></div>
       </div>
 
@@ -3150,7 +3143,7 @@ var wfScreens = [
   {id:'sc6',label:'Review & submit'},
   {id:'sc7',label:'Submitted for review'},
   {id:'sc8',label:'Invoice status tracker'},
-  {id:'sc9',label:'Rate cards & payment terms'},
+  {id:'sc9',label:'Rate cards'},
   {id:'sc10',label:'Spend report'},
   {id:'sc11',label:'Invoice rejected — no SV code'}
 ];
@@ -3217,6 +3210,25 @@ function checkResolveInvoice() {
     return;
   }
   goTo(6);
+}
+
+// ── BLOCK SUBMISSION UNTIL COST BREAKDOWN IS ENTERED (mandatory on every invoice) ──
+function submitInvoiceWithCostCheck() {
+  var ids = ['cb-materials', 'cb-labour', 'cb-equipment'];
+  var errorEl = document.getElementById('cb-error');
+  var firstEmpty = null;
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && !el.value.trim() && !firstEmpty) firstEmpty = el;
+  });
+  if (firstEmpty) {
+    if (errorEl) errorEl.style.display = 'block';
+    firstEmpty.focus();
+    showToast('Cost breakdown is required — enter Materials, Labour and Equipment before submitting', true);
+    return;
+  }
+  if (errorEl) errorEl.style.display = 'none';
+  goTo(7);
 }
 
 /* ══ INIT ══ */
