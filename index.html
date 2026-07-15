@@ -1844,7 +1844,21 @@ body{
         <div class="admin-topbar"><button class="mob-menu-btn" onclick="toggleSidebar(&#39;admin&#39;)">☰</button><h1>Overview — June 2026</h1>
           <div class="tb-right">
             <select class="atb-select"><option>All suppliers</option><option>Chadwicks</option><option>DPL Kilmainham</option><option>Wogan</option></select>
-            <select class="atb-select"><option>June 2026</option><option>May 2026</option><option>Q2 2026</option><option>YTD 2026</option></select>
+            <select class="atb-select" id="filter-site" onchange="updateCostChart()">
+              <option value="all">All sites</option>
+              <option value="sv805">Portmarnock (SV805)</option>
+              <option value="sv802">Tandys Lane (SV802)</option>
+              <option value="sv100">Dunsink Lane (SV100)</option>
+              <option value="sv800">Sallynoggin (SV800)</option>
+              <option value="sv100b">SVG Depot, Donabate (SV100)</option>
+            </select>
+            <select class="atb-select" id="filter-granularity" onchange="onGranularityChange()">
+              <option value="day">By day</option>
+              <option value="week">By week</option>
+              <option value="month" selected>By month</option>
+              <option value="year">By year</option>
+            </select>
+            <select class="atb-select" id="filter-period" onchange="updateCostChart()"></select>
             <button class="btn-red">⬇ Export</button>
           </div>
         </div>
@@ -1861,6 +1875,33 @@ body{
             <div class="stat-card s-blue"><div class="stat-val">8</div><div class="stat-lbl">Active suppliers</div></div>
           </div>
           <div class="crit-strip">⚠️ <strong>Evara Site, Portmarnock (SV805):</strong> Equipment now makes up 67% of this site's spend this month (€10,000 of €14,920). Review plant hire durations before approving further equipment invoices.</div>
+
+          <div class="a-card" style="margin-bottom:14px">
+            <div class="a-card-head">
+              <h2>Cost breakdown chart</h2>
+              <span class="a-card-sub" id="chart-subtitle">All sites · By month · Total <strong id="chart-total-label">€39,650</strong></span>
+            </div>
+            <div style="padding:20px 24px;display:flex;gap:32px;align-items:center;flex-wrap:wrap">
+              <svg viewBox="0 0 320 200" style="width:320px;height:200px;flex-shrink:0">
+                <line x1="20" y1="170" x2="310" y2="170" stroke="#DDD9D3" stroke-width="1"/>
+                <rect id="bar-materials" x="55" y="30" width="60" height="140" rx="4" fill="#C0272D"/>
+                <rect id="bar-labour" x="145" y="30" width="60" height="140" rx="4" fill="#EF9F27"/>
+                <rect id="bar-equipment" x="235" y="30" width="60" height="140" rx="4" fill="#0C447C"/>
+                <text id="label-materials" x="85" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#2C2C2A">€0</text>
+                <text id="label-labour" x="175" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#2C2C2A">€0</text>
+                <text id="label-equipment" x="265" y="24" text-anchor="middle" font-size="12" font-weight="700" fill="#2C2C2A">€0</text>
+                <text x="85" y="186" text-anchor="middle" font-size="11" fill="#6B6A66">🧱 Materials</text>
+                <text x="175" y="186" text-anchor="middle" font-size="11" fill="#6B6A66">👷 Labour</text>
+                <text x="265" y="186" text-anchor="middle" font-size="11" fill="#6B6A66">🔧 Equipment</text>
+              </svg>
+              <div style="flex:1;min-width:180px">
+                <div class="access-status-row"><span class="asr-label">🧱 Materials share</span><span class="asr-val" id="pct-materials">0%</span></div>
+                <div class="access-status-row"><span class="asr-label">👷 Labour share</span><span class="asr-val" id="pct-labour">0%</span></div>
+                <div class="access-status-row"><span class="asr-label">🔧 Equipment share</span><span class="asr-val" id="pct-equipment">0%</span></div>
+              </div>
+            </div>
+          </div>
+
           <div class="two-col">
             <div>
               <div class="a-card">
@@ -3231,10 +3272,75 @@ function submitInvoiceWithCostCheck() {
   goTo(7);
 }
 
+// ── COST BREAKDOWN CHART (Overview) — driven by Site + granularity filters ──
+var SITE_COST_DATA = {
+  all:   { name: 'All sites',                     materials: 22000, labour: 7650, equipment: 10000 },
+  sv805: { name: 'Portmarnock (SV805)',            materials: 1720,  labour: 3200, equipment: 10000 },
+  sv802: { name: 'Tandys Lane (SV802)',            materials: 6500,  labour: 2300, equipment: 0 },
+  sv100: { name: 'Dunsink Lane (SV100)',           materials: 8760,  labour: 0,    equipment: 0 },
+  sv800: { name: 'Sallynoggin (SV800)',            materials: 3040,  labour: 1000, equipment: 1000 },
+  sv100b:{ name: 'SVG Depot, Donabate (SV100)',    materials: 2130,  labour: 0,    equipment: 0 }
+};
+var PERIOD_SCALE = { day: 1/22, week: 1/4.33, month: 1, year: 12 };
+var PERIOD_OPTIONS = {
+  day:   ['15 Jul 2026', '14 Jul 2026', '13 Jul 2026', '12 Jul 2026'],
+  week:  ['Week of 14 Jul', 'Week of 07 Jul', 'Week of 30 Jun', 'Week of 23 Jun'],
+  month: ['June 2026', 'May 2026', 'April 2026'],
+  year:  ['2026', '2025', '2024']
+};
+
+function onGranularityChange() {
+  var gran = document.getElementById('filter-granularity').value;
+  var periodSelect = document.getElementById('filter-period');
+  periodSelect.innerHTML = '';
+  PERIOD_OPTIONS[gran].forEach(function(label) {
+    var opt = document.createElement('option');
+    opt.textContent = label;
+    periodSelect.appendChild(opt);
+  });
+  updateCostChart();
+}
+
+function setBar(key, value, maxValue) {
+  var chartTop = 30, baseline = 170, maxHeight = 140;
+  var h = maxValue > 0 ? Math.max(4, Math.round((value / maxValue) * maxHeight)) : 4;
+  var rect = document.getElementById('bar-' + key);
+  var label = document.getElementById('label-' + key);
+  if (rect) { rect.setAttribute('height', h); rect.setAttribute('y', baseline - h); }
+  if (label) { label.setAttribute('y', Math.max(16, baseline - h - 8)); label.textContent = '€' + value.toLocaleString(); }
+}
+
+function updateCostChart() {
+  var siteKey = document.getElementById('filter-site').value;
+  var gran = document.getElementById('filter-granularity').value;
+  var periodLabel = document.getElementById('filter-period').value || PERIOD_OPTIONS[gran][0];
+  var site = SITE_COST_DATA[siteKey];
+  var scale = PERIOD_SCALE[gran];
+
+  var materials = Math.round(site.materials * scale);
+  var labour = Math.round(site.labour * scale);
+  var equipment = Math.round(site.equipment * scale);
+  var total = materials + labour + equipment;
+  var maxValue = Math.max(materials, labour, equipment, 1);
+
+  setBar('materials', materials, maxValue);
+  setBar('labour', labour, maxValue);
+  setBar('equipment', equipment, maxValue);
+
+  var granLabel = { day: 'By day', week: 'By week', month: 'By month', year: 'By year' }[gran];
+  document.getElementById('chart-subtitle').innerHTML = site.name + ' · ' + granLabel + ' · ' + periodLabel + ' · Total <strong id="chart-total-label">€' + total.toLocaleString() + '</strong>';
+
+  var pct = function(v) { return total > 0 ? Math.round((v / total) * 100) : 0; };
+  document.getElementById('pct-materials').textContent = pct(materials) + '%';
+  document.getElementById('pct-labour').textContent = pct(labour) + '%';
+  document.getElementById('pct-equipment').textContent = pct(equipment) + '%';
+}
+
 /* ══ INIT ══ */
 document.addEventListener('DOMContentLoaded', function() {
   adminPage('dashboard');
   supPage('home');
+  onGranularityChange();
 });
 </script>
 
