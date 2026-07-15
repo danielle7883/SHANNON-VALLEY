@@ -228,6 +228,7 @@ body{
 .admin-topbar h1{font-size:15px;font-weight:700;color:var(--char)}
 .admin-topbar .tb-right{display:flex;align-items:center;gap:10px}
 .atb-select{padding:6px 10px;border:1px solid var(--bdr2);border-radius:7px;font-size:11px;color:var(--char);background:var(--white);font-family:inherit;cursor:pointer}
+.filter-bar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
 .btn-red{background:var(--red);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px;transition:background .15s}
 .btn-red:hover{background:var(--red-d)}
 .btn-outline{background:var(--white);color:var(--char2);border:1px solid var(--bdr2);border-radius:8px;padding:7px 14px;font-size:11px;font-weight:500;cursor:pointer;font-family:inherit}
@@ -958,12 +959,12 @@ body{
   }
   .mob-overlay.on { display: block; }
 
-  /* ── MOBILE MENU BUTTON ── */
+  /* ── MOBILE MENU BUTTON — sits on white admin/supplier topbars, so dark-on-light ── */
   .mob-menu-btn {
     display: none;
-    background: rgba(255,255,255,.1);
-    border: 1px solid rgba(255,255,255,.15);
-    color: rgba(255,255,255,.85);
+    background: var(--bg);
+    border: 1px solid var(--bdr2);
+    color: var(--char);
     font-size: 16px;
     cursor: pointer;
     padding: 5px 10px;
@@ -1018,6 +1019,12 @@ body{
     .admin-topbar .tb-right { gap: 6px; }
     .atb-select { font-size: 10px; padding: 5px 7px; max-width: 110px; }
     .admin-content { padding: 12px; }
+    .filter-bar { gap: 6px; }
+    .filter-bar .atb-select { flex: 1 1 45%; max-width: none; font-size: 11px; padding: 7px 8px; }
+
+    /* ── MODALS → fit within viewport ── */
+    .modal-box { width: calc(100vw - 32px) !important; max-width: 520px; }
+    .modal-overlay { padding: 16px; box-sizing: border-box; }
 
     /* ── SUPPLIER SIDEBAR → slide-in drawer ── */
     .sup-sidebar {
@@ -1843,6 +1850,11 @@ body{
       <div id="ap-dashboard" class="apage on">
         <div class="admin-topbar"><button class="mob-menu-btn" onclick="toggleSidebar(&#39;admin&#39;)">☰</button><h1>Overview — June 2026</h1>
           <div class="tb-right">
+            <button class="btn-red">⬇ Export</button>
+          </div>
+        </div>
+        <div class="admin-content">
+          <div class="filter-bar">
             <select class="atb-select"><option>All suppliers</option><option>Chadwicks</option><option>DPL Kilmainham</option><option>Wogan</option></select>
             <select class="atb-select" id="filter-site" onchange="updateCostChart()">
               <option value="all">All sites</option>
@@ -1859,10 +1871,7 @@ body{
               <option value="year">By year</option>
             </select>
             <select class="atb-select" id="filter-period" onchange="updateCostChart()"></select>
-            <button class="btn-red">⬇ Export</button>
           </div>
-        </div>
-        <div class="admin-content">
           <div class="stat-strip">
             <div class="stat-card s-red"><div class="stat-val">€39,650</div><div class="stat-lbl">Total invoiced this month</div></div>
             <div class="stat-card s-grn" style="display:flex;flex-direction:column;justify-content:center;gap:3px">
@@ -1882,7 +1891,7 @@ body{
               <span class="a-card-sub" id="chart-subtitle">All sites · By month · Total <strong id="chart-total-label">€39,650</strong></span>
             </div>
             <div style="padding:20px 24px;display:flex;gap:32px;align-items:center;flex-wrap:wrap">
-              <svg viewBox="0 0 320 200" style="width:320px;height:200px;flex-shrink:0">
+              <svg viewBox="0 0 320 200" style="width:100%;max-width:320px;min-width:220px;height:auto;flex-shrink:0">
                 <line x1="20" y1="170" x2="310" y2="170" stroke="#DDD9D3" stroke-width="1"/>
                 <rect id="bar-materials" x="55" y="30" width="60" height="140" rx="4" fill="#C0272D"/>
                 <rect id="bar-labour" x="145" y="30" width="60" height="140" rx="4" fill="#EF9F27"/>
@@ -1981,6 +1990,7 @@ body{
       <!-- PAGE: INVOICES -->
       <div id="ap-dispatch" class="apage">
         <div class="admin-topbar">
+          <button class="mob-menu-btn" onclick="toggleSidebar(&#39;admin&#39;)">☰</button>
           <h1>Invoices</h1>
           <div class="tb-right">
             <select class="atb-select"><option>All sites</option><option>Portmarnock</option><option>Tandys Lane</option><option>Dunsink Lane</option></select>
@@ -2019,6 +2029,7 @@ body{
       <!-- PAGE: SUPPLIERS -->
       <div id="ap-suppliers" class="apage">
         <div class="admin-topbar">
+          <button class="mob-menu-btn" onclick="toggleSidebar(&#39;admin&#39;)">☰</button>
           <h1>Suppliers &amp; Access Management</h1>
           <div class="tb-right">
             <select class="atb-select"><option>All statuses</option><option>Active</option><option>Pending</option><option>No access</option></select>
@@ -2377,6 +2388,7 @@ body{
 
       <div id="ap-pos" class="apage">
         <div class="admin-topbar">
+          <button class="mob-menu-btn" onclick="toggleSidebar(&#39;admin&#39;)">☰</button>
           <h1>Rate Cards</h1>
           <div class="tb-right">
             <select class="atb-select"><option>All suppliers</option><option>Chadwicks</option><option>DPL</option></select>
@@ -2406,6 +2418,7 @@ body{
       <!-- PAGE: SITES -->
       <div id="ap-sites" class="apage">
         <div class="admin-topbar">
+          <button class="mob-menu-btn" onclick="toggleSidebar(&#39;admin&#39;)">☰</button>
           <h1>Site Spend</h1>
           <div class="tb-right">
             <select class="atb-select"><option>June 2026</option><option>Q2 2026</option><option>YTD</option></select>
@@ -2438,6 +2451,7 @@ body{
       <!-- PAGE: ALERTS -->
       <div id="ap-alerts" class="apage">
         <div class="admin-topbar">
+          <button class="mob-menu-btn" onclick="toggleSidebar(&#39;admin&#39;)">☰</button>
           <h1>Alerts &amp; Actions Required</h1>
           <div class="tb-right"><button class="btn-outline">Mark all read</button></div>
         </div>
@@ -2504,7 +2518,7 @@ body{
 
       <!-- PAGE: REPORTS -->
       <div id="ap-reports" class="apage">
-        <div class="admin-topbar"><h1>Reports</h1><div class="tb-right"><button class="btn-red">⬇ Export all</button></div></div>
+        <div class="admin-topbar"><button class="mob-menu-btn" onclick="toggleSidebar(&#39;admin&#39;)">☰</button><h1>Reports</h1><div class="tb-right"><button class="btn-red">⬇ Export all</button></div></div>
         <div class="admin-content">
           <div class="info-strip">Select a report type below to generate it. All reports can be exported as CSV or PDF for use in your accounts system.</div>
           <div class="three-col">
@@ -2520,7 +2534,7 @@ body{
 
       <!-- PAGE: SETTINGS -->
       <div id="ap-settings" class="apage">
-        <div class="admin-topbar"><h1>Settings</h1><div class="tb-right"><button class="btn-red" onclick="showToast(&#39;Settings saved&#39;)">Save changes</button></div></div>
+        <div class="admin-topbar"><button class="mob-menu-btn" onclick="toggleSidebar(&#39;admin&#39;)">☰</button><h1>Settings</h1><div class="tb-right"><button class="btn-red" onclick="showToast(&#39;Settings saved&#39;)">Save changes</button></div></div>
         <div class="admin-content">
           <div class="two-col">
             <div class="a-card"><div class="a-card-head"><h2>Alert thresholds</h2></div><div style="padding:16px"><div class="form-grid single"><div><label class="f-label">Alert if one category is above (% of site spend)</label><input class="f-input" value="60"></div></div><div class="form-grid single"><div><label class="f-label">Alert if a category jumps month-on-month by (%)</label><input class="f-input" value="50"></div></div></div></div>
@@ -2618,7 +2632,7 @@ body{
 
       <!-- PAGE: UPLOAD INVOICE -->
       <div id="sp-add-note" class="spage">
-        <div class="sup-topbar"><h1>Upload invoice</h1></div>
+        <div class="sup-topbar"><button class="mob-menu-btn" onclick="toggleSidebar(&#39;sup&#39;)">☰</button><h1>Upload invoice</h1></div>
         <div class="sup-content">
           <div class="info-strip">🧾 Every invoice must be uploaded here and must show a valid SV site number — invoices without one are rejected automatically and sent back to you. The AI also checks pricing against your agreed rates and flags anything unclear for you to confirm before it's sent to Shannon Valley for approval.</div>
           <div class="two-col">
@@ -2671,14 +2685,19 @@ body{
       <!-- PAGE: MY INVOICES -->
       <div id="sp-notes" class="spage">
         <div class="sup-topbar">
+          <button class="mob-menu-btn" onclick="toggleSidebar(&#39;sup&#39;)">☰</button>
           <h1>My invoices</h1>
           <div class="tb-right">
-            <select class="atb-select"><option>All statuses</option><option>Needs info</option><option>Pending review</option><option>Changes requested</option><option>Approved</option><option>Rejected</option></select>
-            <select class="atb-select"><option>June 2026</option><option>May 2026</option></select>
             <button class="btn-red">⬇ Export</button>
           </div>
         </div>
         <div class="sup-content">
+          <div class="filter-bar">
+            <select class="atb-select"><option>All statuses</option><option>Needs info</option><option>Pending review</option><option>Changes requested</option><option>Approved</option><option>Rejected</option></select>
+            <select class="atb-select"><option>All sites</option><option>Sallynoggin (SV800)</option><option>Tandys Lane (SV802)</option><option>Portmarnock (SV805)</option></select>
+            <select class="atb-select"><option>By day</option><option>By week</option><option value="month" selected>By month</option><option>By year</option></select>
+            <select class="atb-select"><option>June 2026</option><option>May 2026</option></select>
+          </div>
           <div class="a-card">
             <div class="a-card-head"><h2>All submitted invoices</h2><span class="a-card-sub">9 invoices · June 2026 · Total: €7,940</span></div>
             <table class="data-table">
@@ -2699,15 +2718,20 @@ body{
       <!-- PAGE: MY RATE CARDS -->
       <div id="sp-pos" class="spage">
         <div class="sup-topbar">
+          <button class="mob-menu-btn" onclick="toggleSidebar(&#39;sup&#39;)">☰</button>
           <h1>My rate cards</h1>
           <div class="tb-right">
-            <select class="atb-select"><option>June 2026</option><option>May 2026</option><option>Q2 2026</option></select>
             <button class="btn-outline" onclick="showToast(&#39;Exporting…&#39;)">⬇ Export</button>
             <button class="btn-red" onclick="supPage(&#39;add-po&#39;)">+ Add / update rate card</button>
           </div>
         </div>
         <div class="sup-content">
           <div class="info-strip">Rate cards are yours to keep up to date — they're what every invoice you submit gets checked against.</div>
+          <div class="filter-bar">
+            <select class="atb-select"><option>All sites</option><option>Sallynoggin (SV800)</option><option>Tandys Lane (SV802)</option><option>Portmarnock (SV805)</option></select>
+            <select class="atb-select"><option>By day</option><option>By week</option><option value="month" selected>By month</option><option>By year</option></select>
+            <select class="atb-select"><option>June 2026</option><option>May 2026</option><option>Q2 2026</option></select>
+          </div>
           <div class="a-card">
             <div class="a-card-head"><h2>My sites</h2><span class="a-card-sub">3 sites</span></div>
             <table class="data-table">
@@ -2724,7 +2748,7 @@ body{
 
       <!-- PAGE: ADD / UPDATE RATE CARD -->
       <div id="sp-add-po" class="spage">
-        <div class="sup-topbar"><h1>Add / update rate card</h1><div class="tb-right"><button class="btn-outline" onclick="supPage(&#39;pos&#39;)">Cancel</button><button class="btn-red" onclick="savePO()">Save rate card</button></div></div>
+        <div class="sup-topbar"><button class="mob-menu-btn" onclick="toggleSidebar(&#39;sup&#39;)">☰</button><h1>Add / update rate card</h1><div class="tb-right"><button class="btn-outline" onclick="supPage(&#39;pos&#39;)">Cancel</button><button class="btn-red" onclick="savePO()">Save rate card</button></div></div>
         <div class="sup-content">
           <div class="info-strip">Pick the Shannon Valley site and keep the agreed price per unit up to date for each material. Every invoice you upload for this site has its line-item prices automatically checked against these rates.</div>
           <div class="two-col">
